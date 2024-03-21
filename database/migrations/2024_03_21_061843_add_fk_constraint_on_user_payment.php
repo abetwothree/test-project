@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('user_payment', function (Blueprint $table) {
+        Schema::table('user_payments', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('user_payment', function (Blueprint $table) {
+        Schema::table('user_payments', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
     }

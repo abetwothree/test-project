@@ -9,7 +9,7 @@ class OrderDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['total'];
+    protected $fillable = ['user_id', 'payment_id', 'total'];
 
     // An OrderDetail belongs to a User
     public function user()

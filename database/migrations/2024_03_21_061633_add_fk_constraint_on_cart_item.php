@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('cart_item', function (Blueprint $table) {
-            $table->foreign('session_id')->references('id')->on('shopping_session');
-            $table->foreign('product_id')->references('id')->on('product');
+        Schema::table('cart_items', function (Blueprint $table) {
+            $table->foreign('session_id')->references('id')->on('shopping_sessions');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('cart_item', function (Blueprint $table) {
+        Schema::table('cart_items', function (Blueprint $table) {
             $table->dropForeign(['session_id']);
             $table->dropForeign(['product_id']);
         });

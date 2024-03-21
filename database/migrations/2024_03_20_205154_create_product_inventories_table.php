@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_payment', function (Blueprint $table) {
+        Schema::create('product_inventories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('payment_type');
-            $table->string('provider');
-            $table->integer('account_number');
-            $table->date('expiry_date');
+            $table->integer('quantity');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_payment');
+        Schema::dropIfExists('product_inventories');
     }
 };
