@@ -14,7 +14,7 @@ class CartItem extends Model
     // A CartItem belongs to a ShoppingSession
     public function shoppingSession()
     {
-        return $this->belongsTo(ShoppingSession::class);
+        return $this->belongsTo(ShoppingSession::class, 'session_id');
     }
 
     // A CartItem belongs to a Product
