@@ -10,17 +10,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductInventoryFactory extends Factory
 {
+    /** @var class-string<ProductInventory> $model */
+    protected $model = ProductInventory::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-
-    protected $model = ProductInventory::class;
     public function definition(): array
     {
         return [
-            'quantity' => $this->faker->numberBetween(0, 1000),
+            'quantity' => fake()->numberBetween(0, 1000),
         ];
     }
 }

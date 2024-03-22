@@ -11,17 +11,25 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ShoppingSessionFactory extends Factory
 {
+    /** @var class-string<ShoppingSession> $model */
+    protected $model = ShoppingSession::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = ShoppingSession::class;
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'total' => $this->faker->randomFloat(2, 10, 5000),
+            'total' => fake()->randomFloat(2, 10, 5000),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (ShoppingSession $shoppingSession) {
+            $shoppingSession->user_id ??= User::factory()->create()->id;
+        });
     }
 }

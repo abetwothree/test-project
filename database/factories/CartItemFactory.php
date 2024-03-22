@@ -12,18 +12,26 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CartItemFactory extends Factory
 {
+    /** @var class-string<CartItem> $model */
+    protected $model = CartItem::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = CartItem::class;
     public function definition(): array
     {
         return [
-            'session_id' => ShoppingSession::factory(),
-            'product_id' => Product::factory(),
-            'quantity' => $this->faker->numberBetween(1, 10),
+            'quantity' => fake()->numberBetween(1, 10),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (CartItem $cartItem) {
+            $cartItem->session_id ??= ShoppingSession::factory()->create()->id;
+            $cartItem->product_id ??= Product::factory()->create()->id;
+        });
     }
 }

@@ -12,18 +12,26 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OrderItemFactory extends Factory
 {
+    /** @var class-string<OrderItem> $model */
+    protected $model = OrderItem::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = OrderItem::class;
     public function definition(): array
     {
         return [
-            'order_id' => OrderDetail::factory(),
-            'product_id' => Product::factory(),
-            'quantity' => $this->faker->numberBetween(1, 5),
+            'quantity' => fake()->numberBetween(1, 5),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (OrderItem $orderItem) {
+            $orderItem->order_id ??= OrderDetail::factory()->create()->id;
+            $orderItem->product_id ??= Product::factory()->create()->id;
+        });
     }
 }

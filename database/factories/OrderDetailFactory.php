@@ -12,19 +12,26 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OrderDetailFactory extends Factory
 {
+    /** @var class-string<OrderDetail> $model */
+    protected $model = OrderDetail::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-
-    protected $model = OrderDetail::class;
     public function definition(): array
     {
         return [
-        'user_id' => User::all()->isEmpty() ? User::factory()->create()->id : User::all()->random()->id,
-        'payment_id'=> PaymentDetail::all()->isEmpty() ? PaymentDetail::factory()->create()->id : PaymentDetail::all()->random()->id,
-            'total' => $this->faker->randomFloat(2, 10, 500),
+            'total' => fake()->randomFloat(2, 10, 500),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (OrderDetail $orderDetail) {
+            $orderDetail->user_id ??= User::inRandomOrder()->first()->id ?? User::factory()->create()->id;
+            $orderDetail->payment_id ??= PaymentDetail::inRandomOrder()->first()->id ?? PaymentDetail::factory()->create()->id;
+        });
     }
 }

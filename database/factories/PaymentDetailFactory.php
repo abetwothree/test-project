@@ -12,19 +12,27 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentDetailFactory extends Factory
 {
+    /** @var class-string<PaymentDetail> $model */
+    protected $model = PaymentDetail::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = PaymentDetail::class;
     public function definition(): array
     {
         return [
-            'order_id' => OrderDetail::factory(),
-            'amount' => $this->faker->randomFloat(2, 10, 500),
-            'provider' => $this->faker->randomElement(['Visa', 'MasterCard', 'PayPal']),
-            'status' => $this->faker->randomElement(['pending', 'completed', 'refunded', 'declined']),
+            'amount' => fake()->randomFloat(2, 10, 500),
+            'provider' => fake()->creditCardType(),
+            'status' => fake()->randomElement(['pending', 'completed', 'refunded', 'declined']),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (PaymentDetail $paymentDetail) {
+            $paymentDetail->order_id ??= OrderDetail::factory()->create()->id;
+        });
     }
 }

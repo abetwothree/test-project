@@ -13,23 +13,30 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFactory extends Factory
 {
+    /** @var class-string<Product> $model */
+    protected $model = Product::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-
-    protected $model = Product::class;
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
-            'desc' => $this->faker->sentence,
-            'SKU' => $this->faker->unique()->bothify('???-########'),
-            'category_id' => ProductCategory::factory(),
-            'inventory_id' => ProductInventory::factory(),
-            'price' => $this->faker->randomFloat(2, 1, 1000),
-            'discount_id' => Discount::factory(),
+            'name' => fake()->word(),
+            'desc' => fake()->sentence(),
+            'SKU' => fake()->unique()->bothify('???-########'),
+            'price' => fake()->randomFloat(2, 1, 1000),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Product $product) {
+            $product->category_id ??= ProductCategory::factory()->create()->id;
+            $product->inventory_id ??= ProductInventory::factory()->create()->id;
+            $product->discount_id ??= Discount::factory()->create()->id;
+        });
     }
 }

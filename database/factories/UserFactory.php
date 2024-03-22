@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    /** @var class-string<User> $model */
+    protected $model = User::class;
+
     /**
      * The current password being used by the factory.
      */
@@ -22,17 +25,14 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $model = User::class;
     public function definition(): array
     {
         return [
-            'username' => $this->faker->unique()->userName,
+            'username' => fake()->unique()->userName(),
             'password' => Hash::make('password'),
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'telephone' => $this->faker->phoneNumber,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'telephone' => fake()->phoneNumber(),
         ];
     }
 

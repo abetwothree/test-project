@@ -11,20 +11,28 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserPaymentFactory extends Factory
 {
+    /** @var class-string<UserPayment> $model */
+    protected $model = UserPayment::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = UserPayment::class;
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'payment_type' => $this->faker->randomElement(['credit_card', 'debit_card', 'paypal']),
-            'provider' => $this->faker->company,
-            'account_number' => $this->faker->bankAccountNumber,
-            'expiry_date' => $this->faker->creditCardExpirationDateString,
+            'payment_type' => fake()->randomElement(['credit_card', 'debit_card', 'paypal']),
+            'provider' => fake()->company(),
+            'account_number' => fake()->iban(),
+            'expiry_date' => fake()->creditCardExpirationDateString(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (UserPayment $userPayment) {
+            $userPayment->user_id ??= User::inRandomOrder()->first()->id ?? User::factory()->create()->id;
+        });
     }
 }

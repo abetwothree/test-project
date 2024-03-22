@@ -11,25 +11,32 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserAddressFactory extends Factory
 {
+    /** @var class-string<UserAddress> $model */
+    protected $model = UserAddress::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-
-    protected $model = UserAddress::class;
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'address_line1' => $this->faker->streetAddress,
-            'address_line2' => $this->faker->secondaryAddress,
-            'city' => $this->faker->city,
-            'state' => $this->faker->state,
-            'postal_code' => $this->faker->postcode,
-            'country' => $this->faker->country,
-            'telephone' => $this->faker->phoneNumber,
-            'mobile' => $this->faker->phoneNumber,
+            'address_line1' => fake()->streetAddress(),
+            'address_line2' => fake()->secondaryAddress(),
+            'city' => fake()->city(),
+            'state' => fake()->state(),
+            'postal_code' => fake()->postcode(),
+            'country' => fake()->country(),
+            'telephone' => fake()->phoneNumber(),
+            'mobile' => fake()->phoneNumber(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (UserAddress $userAddress) {
+            $userAddress->user_id ??= User::factory()->create()->id;
+        });
     }
 }

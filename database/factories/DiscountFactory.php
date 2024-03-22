@@ -10,20 +10,21 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DiscountFactory extends Factory
 {
+    /** @var class-string<Discount> $model */
+    protected $model = Discount::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-
-    protected $model = Discount::class;
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
-            'desc' => $this->faker->sentence,
-            'discount_percent' => $this->faker->randomFloat(2, 1, 99),
-            'active' => $this->faker->boolean,
+            'name' => fake()->word(),
+            'desc' => fake()->sentence(),
+            'discount_percent' => fake()->randomFloat(2, 1, 99),
+            'active' => fake()->boolean(),
         ];
     }
 }
