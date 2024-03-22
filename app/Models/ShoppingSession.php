@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShoppingSession extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = ['total'];
 
     // A ShoppingSession belongs to a User

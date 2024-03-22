@@ -5,14 +5,13 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
-    /** @var class-string<User> $model */
+    /** @var class-string<User> */
     protected $model = User::class;
 
     /**
@@ -35,5 +34,4 @@ class UserFactory extends Factory
             'telephone' => fake()->phoneNumber(),
         ];
     }
-
 }

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFactory extends Factory
 {
-    /** @var class-string<Product> $model */
+    /** @var class-string<Product> */
     protected $model = Product::class;
 
     /**

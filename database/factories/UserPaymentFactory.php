@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserPaymentFactory extends Factory
 {
-    /** @var class-string<UserPayment> $model */
+    /** @var class-string<UserPayment> */
     protected $model = UserPayment::class;
 
     /**

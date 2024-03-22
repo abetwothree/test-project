@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserAddressFactory extends Factory
 {
-    /** @var class-string<UserAddress> $model */
+    /** @var class-string<UserAddress> */
     protected $model = UserAddress::class;
 
     /**

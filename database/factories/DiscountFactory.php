@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DiscountFactory extends Factory
 {
-    /** @var class-string<Discount> $model */
+    /** @var class-string<Discount> */
     protected $model = Discount::class;
 
     /**

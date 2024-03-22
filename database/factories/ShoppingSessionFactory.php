@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\ShoppingSession;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ShoppingSessionFactory extends Factory
 {
-    /** @var class-string<ShoppingSession> $model */
+    /** @var class-string<ShoppingSession> */
     protected $model = ShoppingSession::class;
 
     /**

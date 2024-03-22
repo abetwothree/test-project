@@ -15,7 +15,7 @@ class UserPayment extends Model
         'account_number',
         'expiry_date',
     ];
-    
+
     // UserPayment belongs to User
     public function user()
     {

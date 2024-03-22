@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\OrderItem;
 use App\Models\OrderDetail;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OrderItemFactory extends Factory
 {
-    /** @var class-string<OrderItem> $model */
+    /** @var class-string<OrderItem> */
     protected $model = OrderItem::class;
 
     /**

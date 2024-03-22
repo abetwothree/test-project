@@ -2,17 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\OrderDetail;
 use App\Models\PaymentDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PaymentDetail>
  */
-
 class PaymentDetailFactory extends Factory
 {
-    /** @var class-string<PaymentDetail> $model */
+    /** @var class-string<PaymentDetail> */
     protected $model = PaymentDetail::class;
 
     /**
@@ -27,12 +25,5 @@ class PaymentDetailFactory extends Factory
             'provider' => fake()->creditCardType(),
             'status' => fake()->randomElement(['pending', 'completed', 'refunded', 'declined']),
         ];
-    }
-
-    public function configure(): static
-    {
-        return $this->afterMaking(function (PaymentDetail $paymentDetail) {
-            $paymentDetail->order_id ??= OrderDetail::factory()->create()->id;
-        });
     }
 }

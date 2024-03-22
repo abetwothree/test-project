@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductInventoryFactory extends Factory
 {
-    /** @var class-string<ProductInventory> $model */
+    /** @var class-string<ProductInventory> */
     protected $model = ProductInventory::class;
 
     /**

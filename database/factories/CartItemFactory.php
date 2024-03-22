@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CartItemFactory extends Factory
 {
-    /** @var class-string<CartItem> $model */
+    /** @var class-string<CartItem> */
     protected $model = CartItem::class;
 
     /**

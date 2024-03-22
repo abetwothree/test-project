@@ -2,20 +2,18 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\ProductCategory;
-use App\Models\Product;
-use App\Models\ProductInventory;
+use App\Models\CartItem;
 use App\Models\Discount;
+use App\Models\OrderDetail;
+use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\ProductInventory;
+use App\Models\ShoppingSession;
 use App\Models\User;
 use App\Models\UserAddress;
 use App\Models\UserPayment;
-use App\Models\ShoppingSession;
-use App\Models\CartItem;
-use App\Models\OrderDetail;
-use App\Models\OrderItem;
-use App\Models\PaymentDetail;
+use Illuminate\Database\Seeder;
 
 class SampleSeeder extends Seeder
 {
@@ -29,7 +27,6 @@ class SampleSeeder extends Seeder
         // this will seed products with category, inventory, and discount because of the afterMaking method in the ProductFactory
         Product::factory(10)->create();
 
-
         // something is off with OrderItem that it won't seed properly
         // $orders = OrderItem::factory(fake()->numberBetween(5, 20))
         //             ->has(OrderDetail::factory(), 'order')->create();
@@ -38,7 +35,6 @@ class SampleSeeder extends Seeder
          * this section below will seed the same as above, but explicitly setting the relationships
          * it's also seeding other relationships to link the products and orders to a user
          */
-
         $user = User::factory()
             ->has(UserAddress::factory()->count(fake()->numberBetween(2, 5)), 'addresses')
             ->has(UserPayment::factory()->count(fake()->numberBetween(2, 5)), 'payments')
