@@ -6,7 +6,6 @@ use App\Models\CartItem;
 use App\Models\Discount;
 use App\Models\OrderDetail;
 use App\Models\OrderItem;
-use App\Models\PaymentDetail;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductInventory;
@@ -23,46 +22,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->command->info('Seeding the database, One moment...');
-        // Create Product Categories
-        $categories = ProductCategory::factory(5)->create();
+        $userCount = 10;
+        $this->command->info('Starting seeding product categories and products...');
 
-        // Create Product Inventories
-        ProductInventory::factory()->create();
+        // this will seed products with category, inventory, and discount because of the afterMaking method in the ProductFactory
+        Product::factory(10)->create();
 
-        // Create Discounts
-        Discount::factory(5)->create();
+        $orders = OrderItem::factory(fake()->numberBetween(5, 20))
+            ->has(OrderDetail::factory(), 'order')->create();
 
-        // Create Products
-        $products = Product::factory(2)->create(['category_id' => $categories->random()->id]);
+        /**
+         * this section below will seed the same as above, but explicitly setting the relationships
+         * it's also seeding other relationships to link the products and orders to a user
+         */
+        for ($i = 0; $i < $userCount; $i++) {
+            $user = User::factory()
+                ->has(UserAddress::factory()->count(fake()->numberBetween(2, 5)), 'addresses')
+                ->has(UserPayment::factory()->count(fake()->numberBetween(2, 5)), 'payments')
+                ->create();
 
-        // Create Users and related data
-        $this->command->info('Creating users and its related data...');
-        User::factory(20)->create()->each(function ($user) {
-            // Create related addresses and payments for each user
-            UserAddress::factory()->create(['user_id' => $user->id]);
-            UserPayment::factory()->create(['user_id' => $user->id]);
+            // create a shopping session for each user
+            $session = ShoppingSession::factory()
+                ->for($user, 'user')
+                ->create();
 
-            // Create a Shopping Session with Cart Items for each User
-            $shoppingSession = ShoppingSession::factory()->create(['user_id' => $user->id]);
-            CartItem::factory(3)->create([
-                'session_id' => $shoppingSession->id,
-                'product_id' => Product::inRandomOrder()->first()->id,
-            ]);
+            Product::factory()
+                ->for(ProductCategory::factory(), 'category')
+                ->for(ProductInventory::factory(), 'inventory')
+                ->for(Discount::factory(), 'discount')
+                ->has(
+                    OrderItem::factory(fake()->numberBetween(2, 5))
+                        ->has(OrderDetail::factory(), 'order'),
+                    'orderItems'
+                )
+                ->has(
+                    // attach the session to the cart items
+                    CartItem::factory(fake()->numberBetween(2, 5))
+                        ->for($session, 'shoppingSession'),
+                    'cartItems'
+                )
+                ->count(5)
+                ->create();
+        }
 
-            // Create PaymentDetail and OrderDetail for each User
-            $paymentDetail = PaymentDetail::factory()->create();
-            $orderDetail = OrderDetail::factory()->create([
-                'user_id' => $user->id,
-                'payment_id' => $paymentDetail->id,
-            ]);
-
-            // Create OrderItems for the OrderDetail
-            OrderItem::factory(3)->create([
-                'order_id' => $orderDetail->id,
-                'product_id' => Product::inRandomOrder()->first()->id,
-            ]);
-        });
-        $this->command->info('Database has successfully been seeded...');
+        $this->command->info('Finished seeding product categories and products');
     }
 }

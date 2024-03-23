@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ShoppingSession::class);
     }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
 }
