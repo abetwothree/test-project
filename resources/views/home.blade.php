@@ -33,29 +33,6 @@
     <table class="table-bordered">
         @include('order_detail_filter')
         <tbody id="orderDetails">
-            @forelse($orderDetails as $order)
-                <tr class="{{ $order->items->first()->product->discount->active &&
-                                $order->items->first()->product->discount->discount_percent > 0 ?
-                                'highlight' : '' }}">
-                    <td>{{ $order->created_at }}</td>
-                    <td>{{ $order->items->first()->product->name }}</td>
-                    <td>{{ $order->items->first()->product->category->name }}</td>
-                    <td>{{ 
-                        $order->items->first()->product->discount->active &&
-                        $order->items->first()->product->discount->discount_percent > 0 ?
-                        'true' : 'false' 
-                        }}
-                    </td>
-                    <td>{{ $order->user->username }}</td>
-                    <td>{{ $order->items->first()->quantity }}</td>
-                    <td>{{ $order->total }}</td>
-                    <td>{{ $order->address->state }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="8">No orders found.</td>
-                </tr>
-            @endforelse
         </tbody>
     </table>
 </body>

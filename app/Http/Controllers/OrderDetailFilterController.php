@@ -12,16 +12,8 @@ class OrderDetailFilterController extends Controller
         // Query the OrderDetail model
         $query = OrderDetail::query();
 
-        // Filter by name
-        if ($request->has('name')) {
-            // Get the name query parameter
-            $name = $request->query('name');
-            // Use whereHas to filter by the product name which lives in the items relationship
-            $query->whereHas('items.product', function ($query) use ($name) {
-                // Use the like operator to search for the name
-                $query->where('name', 'like', '%'.$name.'%');
-            });
-        }
+        // Apply filters
+        $this->applyFilters($query, $request);
 
         // Eager load the items and their product
         $query->with([
@@ -31,6 +23,7 @@ class OrderDetailFilterController extends Controller
             'items.product.inventory',
             'items.product.discount',
             'paymentDetail',
+            'address',
         ]);
 
         // orderDetails query result
@@ -38,5 +31,16 @@ class OrderDetailFilterController extends Controller
 
         // Return the orderDetails as JSON response
         return response()->json($orderDetails);
+    }
+
+    private function applyFilters($query, Request $request)
+    {
+        // Filter by name
+        $query->when($request->has('name'), function ($query) use ($request) {
+            $name = $request->query('name');
+            $query->whereHas('items.product', function ($query) use ($name) {
+                $query->where('name', 'like', '%'.$name.'%');
+            });
+        });
     }
 }

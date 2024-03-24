@@ -13,7 +13,7 @@
             <th>Username</th>
             <th>Quantity</th>
             <th>Total</th>
-            <th>State</th>
+            <th>State of Purchase</th>
         </tr>
     </thead>
 

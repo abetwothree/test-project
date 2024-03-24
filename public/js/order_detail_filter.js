@@ -13,6 +13,7 @@ fetch('/order-detail-filter')
             <td>${order.user.username}</td>
             <td>${order.items[0].quantity}</td>
             <td>${order.total}</td>
+            <td>${order.address.state}</td>
         `;
         document.getElementById('orderDetails').appendChild(tr);
     });
@@ -28,25 +29,17 @@ document.getElementById('search').addEventListener('input', function() {
         })
         .then(data => {
             // Clear the current table rows
-            // console.log("Data just after fetching:", data);
             document.getElementById('orderDetails').innerHTML = '';
 
             // Create new table rows for each object in the data
             data.forEach(order => {
                 const tr = document.createElement('tr');
 
-                // Log for debugging
-                console.log("Order Address ID:", order.address_id);
-                console.log("Addresses Array:", order.user.addresses);
-
-                const matchingAddress = order.user.addresses.find(address => {
-                    // Log each comparison for debugging
-                    console.log("Comparing:", address.user_id, order.address_id);
-                    return address.id == order.address_id;
-                });
-
-                const addressString = matchingAddress ? `${matchingAddress.state}` : 'Address not found';
-
+                // // Add 'highlight' class if the first item has an active discount with a discount percentage greater than 0
+                // if (order.items[0].product.discount.active && order.items[0].product.discount.discount_percent > 0) {
+                //     tr.classList.add('highlight');
+                // }
+                console.log(order.items[0].product.discount.active)
                 tr.innerHTML = `
                     <td>${order.created_at}</td>
                     <td>${order.items[0].product.name}</td>
@@ -57,8 +50,7 @@ document.getElementById('search').addEventListener('input', function() {
                     <td>${order.user.username}</td>
                     <td>${order.items[0].quantity}</td>
                     <td>$${order.total}</td>
-                    <td>${addressString}</td>
-                    <td>${JSON.stringify(order.user.addresses[0].user_id)}</td>
+                    <td>${order.address.state}</td>
                 `;
                 document.getElementById('orderDetails').appendChild(tr);
                 console.log(order);
