@@ -9,7 +9,7 @@ class OrderDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'payment_id', 'total'];
+    protected $fillable = ['user_id', 'payment_id', 'address_id', 'total'];
 
     // An OrderDetail belongs to a User
     public function user()
@@ -17,15 +17,21 @@ class OrderDetail extends Model
         return $this->belongsTo(User::class);
     }
 
+    // An OrderDetail belongs to an Address
+    public function address()
+    {
+        return $this->belongsTo(UserAddress::class, 'address_id');
+    }
+
     // An OrderDetail has many OrderItems
     public function items()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 
     // An OrderDetail is associated with a PaymentDetail
     public function paymentDetail()
     {
-        return $this->hasOne(PaymentDetail::class);
+        return $this->belongsTo(PaymentDetail::class, 'payment_id');
     }
 }

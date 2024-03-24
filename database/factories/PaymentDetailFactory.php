@@ -22,7 +22,7 @@ class PaymentDetailFactory extends Factory
     {
         return [
             'amount' => fake()->randomFloat(2, 10, 500),
-            'provider' => fake()->creditCardType(),
+            'provider' => fake()->randomElement(['MC', 'AMEX', 'VISA', 'DISCOVER']),
             'status' => fake()->randomElement(['pending', 'completed', 'refunded', 'declined']),
         ];
     }

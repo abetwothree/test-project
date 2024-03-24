@@ -10,4 +10,10 @@ class PaymentDetail extends Model
     use HasFactory;
 
     protected $fillable = ['amount', 'provider', 'status'];
+
+    // A PaymentDetail is associated with an OrderDetail
+    public function orderDetail()
+    {
+        return $this->hasOne(OrderDetail::class);
+    }
 }

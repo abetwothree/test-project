@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->decimal('total');
             $table->unsignedBigInteger('payment_id');
+            $table->unsignedBigInteger('address_id');
             $table->timestamps();
         });
     }

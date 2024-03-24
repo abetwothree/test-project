@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\OrderDetail;
 use App\Models\PaymentDetail;
 use App\Models\User;
+use App\Models\UserAddress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -32,6 +33,7 @@ class OrderDetailFactory extends Factory
         return $this->afterMaking(function (OrderDetail $orderDetail) {
             $orderDetail->user_id ??= User::inRandomOrder()->first()->id ?? User::factory()->create()->id;
             $orderDetail->payment_id ??= PaymentDetail::inRandomOrder()->first()->id ?? PaymentDetail::factory()->create()->id;
+            $orderDetail->address_id ??= UserAddress::inRandomOrder()->first()->id ?? UserAddress::factory()->create()->id;
         });
     }
 }

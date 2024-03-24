@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::resource('', OrderReportController::class);
+
+Route::get('/order-detail-filter', [App\Http\Controllers\OrderDetailFilterController::class, 'index']);

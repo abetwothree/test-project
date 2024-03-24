@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('payment_type');
             $table->string('provider');
-            $table->bigInteger('account_number');
+            $table->string('account_number');
             $table->string('expiry_date');
             $table->timestamps();
         });

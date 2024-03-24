@@ -6,6 +6,7 @@ use App\Models\CartItem;
 use App\Models\Discount;
 use App\Models\OrderDetail;
 use App\Models\OrderItem;
+use App\Models\PaymentDetail;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductInventory;
@@ -17,28 +18,19 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        $userCount = 10;
+        $userCount = 3;
+
         $this->command->info('Starting seeding product categories and products...');
 
         // this will seed products with category, inventory, and discount because of the afterMaking method in the ProductFactory
-        Product::factory(10)->create();
+        Product::factory(3)->create();
 
-        $orders = OrderItem::factory(fake()->numberBetween(5, 20))
-            ->has(OrderDetail::factory(), 'order')->create();
-
-        /**
-         * this section below will seed the same as above, but explicitly setting the relationships
-         * it's also seeding other relationships to link the products and orders to a user
-         */
         for ($i = 0; $i < $userCount; $i++) {
             $user = User::factory()
-                ->has(UserAddress::factory()->count(fake()->numberBetween(2, 5)), 'addresses')
-                ->has(UserPayment::factory()->count(fake()->numberBetween(2, 5)), 'payments')
+                ->has(UserAddress::factory()->count(fake()->numberBetween(1, 3)), 'addresses')
+                ->has(UserPayment::factory()->count(fake()->numberBetween(1, 3)), 'payments')
                 ->create();
 
             // create a shopping session for each user
@@ -46,25 +38,24 @@ class DatabaseSeeder extends Seeder
                 ->for($user, 'user')
                 ->create();
 
+            // create products with associated order items, cart items, and details
             Product::factory()
                 ->for(ProductCategory::factory(), 'category')
                 ->for(ProductInventory::factory(), 'inventory')
                 ->for(Discount::factory(), 'discount')
                 ->has(
-                    OrderItem::factory(fake()->numberBetween(2, 5))
-                        ->has(OrderDetail::factory(), 'order'),
+                    OrderItem::factory(fake()->numberBetween(1, 3))
+                        ->has(OrderDetail::factory()->has(PaymentDetail::factory()), 'order'),
                     'orderItems'
                 )
                 ->has(
                     // attach the session to the cart items
-                    CartItem::factory(fake()->numberBetween(2, 5))
+                    CartItem::factory(fake()->numberBetween(1, 3))
                         ->for($session, 'shoppingSession'),
                     'cartItems'
                 )
-                ->count(5)
+                ->count(2)
                 ->create();
         }
-
-        $this->command->info('Finished seeding product categories and products');
     }
 }

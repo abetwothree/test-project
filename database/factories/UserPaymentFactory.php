@@ -24,7 +24,7 @@ class UserPaymentFactory extends Factory
         return [
             'payment_type' => fake()->randomElement(['credit_card', 'debit_card', 'paypal']),
             'provider' => fake()->company(),
-            'account_number' => (int) fake()->iban('US'),
+            'account_number' => fake()->iban('US'),
             'expiry_date' => fake()->creditCardExpirationDateString(),
         ];
     }
