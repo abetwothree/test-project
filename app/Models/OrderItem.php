@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OrderItem extends Model
 {
@@ -18,7 +19,8 @@ class OrderItem extends Model
     }
 
     // An OrderItem belongs to a Product
-    public function product()
+    /** @return BelongsTo<Product, self> */
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
