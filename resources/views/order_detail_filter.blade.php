@@ -1,7 +1,13 @@
 <body>
 
 <h1>Order Details</h1>
-<input type="text" id="search" placeholder="Search by product name">
+
+<input type="text" id="product" placeholder="Search by product name">
+<input type="text" id="category" placeholder="Search by category">
+<input type="text" id="username" placeholder="Search by username">
+<input type="text" id="quantity" placeholder="Search by quantity">
+<input type="text" id="total" placeholder="Search by total">
+<input type="text" id="state" placeholder="Search by state">
 <br>
 <br>
     <thead>

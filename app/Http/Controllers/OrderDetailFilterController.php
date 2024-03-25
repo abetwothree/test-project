@@ -18,12 +18,12 @@ class OrderDetailFilterController extends Controller
         // Eager load the items and their product
         $query->with([
             'user',
+            'address',
             'user.addresses',
             'items.product.category',
             'items.product.inventory',
             'items.product.discount',
             'paymentDetail',
-            'address',
         ]);
 
         // orderDetails query result
@@ -35,12 +35,38 @@ class OrderDetailFilterController extends Controller
 
     private function applyFilters($query, Request $request)
     {
-        // Filter by name
-        $query->when($request->has('name'), function ($query) use ($request) {
-            $name = $request->query('name');
-            $query->whereHas('items.product', function ($query) use ($name) {
-                $query->where('name', 'like', '%'.$name.'%');
+        // relationship and field mapping
+        $filters = [
+            'product' => ['items.product', 'name'],
+            'category' => ['items.product.category', 'name'],
+            'username' => ['user', 'username'],
+            'quantity' => ['items', 'quantity'],
+            'total' => ['total', '<='],
+            'state' => ['address', 'state'],
+        ];
+
+        foreach ($filters as $key => [$relation, $field]) {
+            $query->when($request->input($key, false), function ($query, $value) use ($relation, $field) {
+                // used switch for readability, can add more cases without cluttering the code
+                switch ($field) {
+                    case '<=':
+                        $value = floatval($value);
+                        $query->where($relation, $field, $value);
+                        break;
+
+                    case 'quantity':
+                        $query->whereHas($relation, function ($query) use ($field, $value) {
+                            $query->where($field, $value);
+                        });
+                        break;
+
+                    default:
+                        $query->whereHas($relation, function ($query) use ($field, $value) {
+                            $query->where($field, 'like', '%'.$value.'%');
+                        });
+                        break;
+                }
             });
-        });
+        }
     }
 }
