@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderDetail extends Model
 {
@@ -24,7 +25,8 @@ class OrderDetail extends Model
     }
 
     // An OrderDetail has many OrderItems
-    public function items()
+    /** @return HasMany<OrderItem> */
+    public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class, 'order_id');
     }
