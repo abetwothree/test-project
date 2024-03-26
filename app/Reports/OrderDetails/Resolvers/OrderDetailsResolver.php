@@ -16,6 +16,7 @@ class OrderDetailsResolver
         //
     }
 
+    /** @return Collection<int, OrderDetail> */
     public function resolve(
         CarbonImmutable $startDate,
         CarbonImmutable $endDate,

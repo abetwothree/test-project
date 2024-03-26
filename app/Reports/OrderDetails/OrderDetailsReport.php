@@ -2,9 +2,10 @@
 
 namespace App\Reports\OrderDetails;
 
+use App\Reports\OrderDetails\DomainTransferObjects\TableData;
 use App\Reports\OrderDetails\Resolvers\OrderDetailsResolver;
+use App\Reports\OrderDetails\Resolvers\TableDataResolver;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class OrderDetailsReport
 {
@@ -13,13 +14,14 @@ class OrderDetailsReport
      */
     public function __construct(
         protected OrderDetailsResolver $ordersResolver,
+        protected TableDataResolver $tableDataResolver,
     ) {
         //
     }
 
-    public function generate(Request $request): Collection
+    public function generate(Request $request): TableData
     {
-        $orders = $this->ordersResolver->resolve(
+        $orderDetails = $this->ordersResolver->resolve(
             startDate: ($request->start_date ? now($request->start_date) : now()->startOfMonth())->toImmutable(),
             endDate: ($request->end_date ? now($request->end_date) : now()->endOfMonth())->toImmutable(),
             productName: $request->name,
@@ -29,10 +31,6 @@ class OrderDetailsReport
             state: $request->state,
         );
 
-        // pass the orders to another resolver to calculate total amounts or other business logic
-        // those resolvers can "hardstone" the data by creating DTOs (Data Transfer Objects) or other structures
-        // finally, return the report data
-
-        return $orders;
+        return $this->tableDataResolver->resolve($orderDetails);
     }
 }
