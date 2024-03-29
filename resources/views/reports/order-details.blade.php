@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <x-slot name="heading">
+    <x-slot:heading>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Order Details
         </h2>
@@ -25,7 +25,7 @@
     </form>
 
     <x-table>
-        <x-slot name="head">
+        <x-slot:head>
             <tr>
                 <th>Order ID</th>
                 <th>Product Name</th>
@@ -34,7 +34,7 @@
                 <th>Total</th>
             </tr>
         </x-slot>
-        <x-slot name="body">
+        <x-slot:body>
             @foreach($orderDetails as $orderDetail)
                 <tr>
                     <td>{{ $orderDetail->order_id }}</td>
